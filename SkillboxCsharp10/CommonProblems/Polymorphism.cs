@@ -1,6 +1,8 @@
 ﻿using SkillboxCsharp10.Clients;
 using SkillboxCsharp10.Employees;
 
+using System.Collections.Generic;
+
 namespace SkillboxCsharp10.CommonProblems
 {
     public class Polymorphism
@@ -39,6 +41,9 @@ namespace SkillboxCsharp10.CommonProblems
             }
         }
 
+        /// <summary>
+        /// Решение этой проблемы с использованием полиморфизма.
+        /// </summary>
         void UsingPolymorphism()
         {
             // Объявляем ссылку на текущего сотрудника с общим типом для них.
@@ -67,6 +72,34 @@ namespace SkillboxCsharp10.CommonProblems
             // не прибегая к дублированию кода.
             currentEmployee.ReadClient(client);
             currentEmployee.EditClient(client, client);
+        }
+
+        /// <summary>
+        /// Пример использования в коллекциях.
+        /// </summary>
+        void WithCollections()
+        {
+            // Создаем объекты сотрудников.
+            Consultant consultant = new Consultant();
+            Manager manager = new Manager();
+
+            // Какой-то клиент, не важно откуда взялся.
+            Client client = null;
+
+            // Создаем коллекцию сотрудников.
+            List<IBankEmployee> employees = new List<IBankEmployee>()
+            {
+                consultant, manager
+            };
+
+            // Теперь мы можем пройтись по коллекции и
+            // вызвать для каждого сотрудника
+            // свой вариант обработки данных клиента.
+            foreach (var currentEmployee in employees)
+            {
+                currentEmployee.ReadClient(client);
+                currentEmployee.EditClient(client, client);
+            }
         }
     }
 }
