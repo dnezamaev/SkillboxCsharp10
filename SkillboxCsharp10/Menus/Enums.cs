@@ -11,6 +11,7 @@
     {
         Unknown = 0,
         ShowAllClients,
+        AddClient,
         EditLastName,
         EditFirstName,
         EditPatronymic,

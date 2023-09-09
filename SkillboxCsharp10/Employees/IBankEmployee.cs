@@ -28,9 +28,9 @@ namespace SkillboxCsharp10.Employees
         /// Для каждого сотрудника будет своя реализация.
         /// На основе этого строится разграничение доступа.
         /// </summary>
-        /// <param name="original">Исходные данные клиента.</param>
-        /// <param name="edited">Отредактированные данные клиента.</param>
+        /// <param name="client">Исходные данные клиента.</param>
+        /// <param name="infoToEdit">Отредактированные данные клиента.</param>
         /// <returns>Успешно ли прошло редактировани.</returns>
-        bool EditClient(Client original, Client edited);
+        bool EditClient(Client client, ClientInfo infoToEdit);
     }
 }

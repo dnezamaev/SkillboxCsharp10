@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
 using SkillboxCsharp10.Clients;
@@ -25,11 +26,6 @@ namespace SkillboxCsharp10.Repositories
         private string clientsFilePath;
 
         /// <summary>
-        /// Сохранённый список клиентов.
-        /// </summary>
-        private List<Client> clients;
-
-        /// <summary>
         /// Конструктор для создания репозитория.
         /// </summary>
         /// <param name="clientsFile">Путь к файлу.</param>
@@ -42,14 +38,14 @@ namespace SkillboxCsharp10.Repositories
 
         public IEnumerable<Client> Load()
         {
-            clients = new List<Client>();
+            var clients = new List<Client>();
 
             using (StreamReader clientReader = new StreamReader(clientsFilePath))
             {
                 string line;
                 while ((line = clientReader.ReadLine()) != null)
                 {
-                    Client client = ClientFromFileLine(line);
+                    Client client = new Client(ClientInfoFromFileLine(line));
 
                     clients.Add(client);
 
@@ -75,8 +71,7 @@ namespace SkillboxCsharp10.Repositories
             }
         }
 
-
-        public Client FindById(int id)
+        public Client FindById(int id, IEnumerable<Client> clients)
         {
             foreach (var client in clients)
             {
@@ -109,17 +104,19 @@ namespace SkillboxCsharp10.Repositories
             }
         }
 
-        private static Client ClientFromFileLine(string line)
+        private static ClientInfo ClientInfoFromFileLine(string line)
         {
             string[] lineParts = line.Split(ColumnSeparatorInFile);
 
-            return new Client(
-                int.Parse(lineParts[0]),
-                lineParts[1],
-                lineParts[2],
-                lineParts[3],
-                lineParts[4],
-                lineParts[5]);
+            return new ClientInfo
+            {
+                Id = int.Parse(lineParts[0]),
+                LastName = lineParts[1],
+                FirstName = lineParts[2],
+                Patronymic = lineParts[3],
+                Passport = lineParts[4],
+                Phone = lineParts[5],
+            };
         }
 
         private static ChangeLogItem LogItemFromFileLine(string line)
@@ -171,9 +168,18 @@ namespace SkillboxCsharp10.Repositories
                 logItem.ChangeInfo);
         }
 
-        public void Save()
+        public int GetNextId()
         {
-            Save(clients);
+            var lastLine = File.ReadLines(clientsFilePath).LastOrDefault();
+
+            if (lastLine == null)
+            {
+                return 1;
+            }
+
+            var lastClient = ClientInfoFromFileLine(lastLine);
+
+            return lastClient.Id + 1;
         }
     }
 }

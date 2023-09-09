@@ -5,31 +5,35 @@ using System.Text;
 namespace SkillboxCsharp10.Clients
 {
     /// <summary>
-    /// Информация о клиенте.
+    /// Полная информация о клиенте.
+    /// Дополнительно включает историю изменений этого клиента.
     /// </summary>
-    public class Client
+    public class Client : ClientInfo
     {
-        public int Id { get; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Patronymic { get; set; }
-        public string Phone { get; set; }
-        public string Passport { get; set; }
-        public List<ChangeLogItem> ChangeLog { get; set; } = new List<ChangeLogItem>();
+        public List<ChangeLogItem> ChangeLog { get; set; }
 
-        public Client(int id, string lastName, string firstName, string patronymic, string phone, string passportInfo)
+        /// <summary>
+        /// Конструктор. Создает нового клиента с пустой историей изменений
+        /// по предоставленной базовой информации.
+        /// </summary>
+        public Client(ClientInfo clientInfo)
         {
-            Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            Patronymic = patronymic;
-            Phone = phone;
-            Passport = passportInfo;
+            Id = clientInfo.Id;
+            FirstName = clientInfo.FirstName;
+            LastName = clientInfo.LastName;
+            Patronymic = clientInfo.Patronymic;
+            Phone = clientInfo.Phone;
+            Passport = clientInfo.Passport;
+
+            ChangeLog = new List<ChangeLogItem>();
         }
 
-        public Client(Client other) : this(
-            other.Id, other.LastName, other.FirstName, other.Patronymic,
-            other.Phone, other.Passport)
+        /// <summary>
+        /// Конструктор копирования. Создает копию клиента.
+        /// История изменений передается по ссылке.
+        /// </summary>
+        /// <param name="other"></param>
+        public Client(Client other) : this(other as ClientInfo)
         {
             ChangeLog = other.ChangeLog;
         }
@@ -39,8 +43,6 @@ namespace SkillboxCsharp10.Clients
             ChangeLogItem history = new ChangeLogItem(DateTime.Now, changeInfo, employee);
             ChangeLog.Add(history);
         }
-
-        public string FullName { get => $"{LastName} {FirstName} {Patronymic}"; }
 
         public override string ToString()
         {

@@ -26,7 +26,7 @@ namespace SkillboxCsharp10.Clients
 
         public override string ToString()
         {
-            return $"{Date}: {Employee} изменил {ChangeInfo}";
+            return $"{Date} ({Employee}): {ChangeInfo}";
         }
     }
 }

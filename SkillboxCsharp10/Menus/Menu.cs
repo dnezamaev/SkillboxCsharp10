@@ -46,12 +46,13 @@ namespace SkillboxCsharp10.Menus
         {
             Console.Write(
                 "1 - Показать всех клиентов\n" +
-                "2 - Изменить фамилию\n" +
-                "3 - Изменить имя\n" +
-                "4 - Изменить отчество\n" +
-                "5 - Изменить телефон\n" +
-                "6 - Изменить паспорт\n" +
-                "7 - Выйти из программы\n");
+                "2 - Добавить клиента\n" +
+                "3 - Изменить фамилию\n" +
+                "4 - Изменить имя\n" +
+                "5 - Изменить отчество\n" +
+                "6 - Изменить телефон\n" +
+                "7 - Изменить паспорт\n" +
+                "8 - Выйти из программы\n");
 
             if (!int.TryParse(Console.ReadLine(), out int parsedMenuNumber))
             {
@@ -72,7 +73,8 @@ namespace SkillboxCsharp10.Menus
                 "4 - (тест) Изменить фамилию\n" +
                 "5 - (тест) Изменить имя\n" +
                 "6 - (тест) Изменить отчество\n" +
-                "7 - (тест) Изменить паспорт\n"
+                "7 - (тест) Изменить паспорт\n" + 
+                "8 - (тест) Добавить клиента\n"
                 );
 
             string userInput = Console.ReadLine();
@@ -100,6 +102,9 @@ namespace SkillboxCsharp10.Menus
                 case "7":
                     result = MenuActions.EditPassportInfo;
                     break;
+                case "8":
+                    result = MenuActions.AddClient;
+                    break;
                 default:
                     result = MenuActions.Unknown;
                     break;
@@ -114,31 +119,31 @@ namespace SkillboxCsharp10.Menus
             return int.Parse(Console.ReadLine());
         }
 
-        public string EditLastName()
+        public string EnterLastName()
         {
             Console.WriteLine("Введите фамилию:");
             return Console.ReadLine();
         }
 
-        public string EditFirstName()
+        public string EnterFirstName()
         {
             Console.WriteLine("Введите имя:");
             return Console.ReadLine();
         }
 
-        public string EditPatronymic()
+        public string EnterPatronymic()
         {
             Console.WriteLine("Введите отчество:");
             return Console.ReadLine();
         }
 
-        public string EditPhone()
+        public string EnterPhone()
         {
             Console.WriteLine("Введите телефон (не пустой):");
             return Console.ReadLine();
         }
 
-        public string EditPassport()
+        public string EnterPassport()
         {
             Console.WriteLine("Введите паспортные данные:");
             return Console.ReadLine();

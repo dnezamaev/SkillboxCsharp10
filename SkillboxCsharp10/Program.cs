@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using SkillboxCsharp10.Clients;
 using SkillboxCsharp10.Employees;
 using SkillboxCsharp10.Menus;
@@ -92,6 +94,10 @@ namespace SkillboxCsharp10
 
             switch (menuActionChoosen)
             {
+                case MenuActions.AddClient:
+                    CreateClient(menu, clientsFromRepository);
+                    break;
+
                 case MenuActions.ShowAllClients:
                     ShowClients(clientsFromRepository);
                     break;
@@ -110,6 +116,35 @@ namespace SkillboxCsharp10
             }
 
             return menuActionChoosen;
+        }
+
+        /// <summary>
+        /// Создает нового клиента.
+        /// </summary>
+        private static void CreateClient(Menu menu, IEnumerable<Client> clientsFromRepository)
+        {
+            if (employee is not IClientCreator)
+            {
+                Console.WriteLine("Вы не можете добавлять клиентов.");
+                return;
+            }
+
+            // Спрашиваем у пользователя значения полей.
+            var userInput = new ClientInfo
+            {
+                Id = repository.GetNextId(),
+                LastName = menu.EnterLastName(),
+                FirstName = menu.EnterFirstName(),
+                Patronymic = menu.EnterPatronymic(),
+                Phone = menu.EnterPhone(),
+                Passport = menu.EnterPassport(),
+            };
+
+            var clientCreator = employee as IClientCreator;
+            var client = clientCreator.CreateClient(userInput);
+
+            clientsFromRepository = clientsFromRepository.Append(client);
+            repository.Save(clientsFromRepository);
         }
 
         /// <summary>
@@ -137,7 +172,7 @@ namespace SkillboxCsharp10
             // Спрашиваем у пользователя какого клиента он хочет редактировать,
             // предлагаем поиск по идентификатору.
             int id = menu.ChooseClientIdForEdit();
-            Client foundClient = repository.FindById(id);
+            Client foundClient = repository.FindById(id, clientsFromRepository);
 
             // Создаем копию этого клиента для хранения отредактированных данных.
             Client editClient = new Client(foundClient);
@@ -146,19 +181,19 @@ namespace SkillboxCsharp10
             switch (menuActionChoosen)
             {
                 case MenuActions.EditPhone:
-                    editClient.Phone = menu.EditPhone();
+                    editClient.Phone = menu.EnterPhone();
                     break;
                 case MenuActions.EditFirstName:
-                    editClient.FirstName = menu.EditFirstName();
+                    editClient.FirstName = menu.EnterFirstName();
                     break;
                 case MenuActions.EditLastName:
-                    editClient.LastName = menu.EditLastName();
+                    editClient.LastName = menu.EnterLastName();
                     break;
                 case MenuActions.EditPatronymic:
-                    editClient.Patronymic = menu.EditPatronymic();
+                    editClient.Patronymic = menu.EnterPatronymic();
                     break;
                 case MenuActions.EditPassportInfo:
-                    editClient.Passport = menu.EditPassport();
+                    editClient.Passport = menu.EnterPassport();
                     break;
                 default:
                     break;

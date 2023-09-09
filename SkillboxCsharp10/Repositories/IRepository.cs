@@ -29,6 +29,12 @@ namespace SkillboxCsharp10.Repositories
         /// <summary>
         /// Поиск клиента по идентификатору.
         /// </summary>
-        Client FindById(int id);
+        Client FindById(int id, IEnumerable<Client> clients);
+
+        /// <summary>
+        /// Идентификатор для нового клиента.
+        /// </summary>
+        /// <returns></returns>
+        int GetNextId();
     }
 }

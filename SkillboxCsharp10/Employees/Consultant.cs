@@ -54,7 +54,7 @@ namespace SkillboxCsharp10.Employees
         /// <param name="original">Исходные данные клиента.</param>
         /// <param name="edited">Отредактированные данные клиента.</param>
         /// <returns>Успешно ли прошло редактировани.</returns>
-        public virtual bool EditClient(Client original, Client edited)
+        public virtual bool EditClient(Client original, ClientInfo edited)
         {
             return
                 EditName(original, edited) &&
@@ -67,7 +67,7 @@ namespace SkillboxCsharp10.Employees
         /// Для простоты редактирование всех частей имени объединено в один метод.
         /// Вернёт false, если отличаются, т.к. консультанту запрещено редактирование.
         /// </summary>
-        protected virtual bool EditName(Client original, Client edited)
+        protected virtual bool EditName(Client original, ClientInfo edited)
         {
             return original.FullName == edited.FullName;
         }
@@ -77,7 +77,7 @@ namespace SkillboxCsharp10.Employees
         /// Проверяет, что паспорт измененного и исходного клиента совпадают.
         /// Вернёт false, если отличаются, т.к. консультанту запрещено редактирование.
         /// </summary>
-        protected virtual bool EditPassport(Client original, Client edited)
+        protected virtual bool EditPassport(Client original, ClientInfo edited)
         {
             return original.Passport == edited.Passport;
         }
@@ -87,7 +87,7 @@ namespace SkillboxCsharp10.Employees
         /// Редактирует телефон клиента.
         /// Вернёт false, если телефон пустой.
         /// </summary>
-        protected virtual bool EditPhone(Client original, Client edited)
+        protected virtual bool EditPhone(Client original, ClientInfo edited)
         {
             if (string.IsNullOrEmpty(edited.Phone))
             {

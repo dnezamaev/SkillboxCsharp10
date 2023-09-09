@@ -14,8 +14,9 @@ namespace SkillboxCsharp10.Employees
     /// Метод EditClient наследуется в неизменном виде, 
     ///   логика редактирования переопределена в protected методах 
     ///   редактирования отдельных частей.
+    /// Дополнительно реализует интерфейс создателя клиентов IClientCreator.
     /// </summary> 
-    public class Manager : Consultant
+    public class Manager : Consultant, IClientCreator
     {
         public override string Title { get => "Менеджер"; }
 
@@ -45,7 +46,7 @@ namespace SkillboxCsharp10.Employees
         /// Переопределение логики редактирования имени клиента.
         /// Всегда возвращает true, т.к. менеджер имеет право редактировать что угодно.
         /// </summary>
-        protected override bool EditName(Client original, Client edited)
+        protected override bool EditName(Client original, ClientInfo edited)
         {
             if (original.FullName != edited.FullName)
             {
@@ -62,7 +63,7 @@ namespace SkillboxCsharp10.Employees
         /// Переопределение логики редактирования имени клиента.
         /// Всегда возвращает true, т.к. менеджер имеет право редактировать что угодно.
         /// </summary>
-        protected override bool EditPassport(Client original, Client edited)
+        protected override bool EditPassport(Client original, ClientInfo edited)
         {
             if (original.Passport != edited.Passport)
             {
@@ -71,6 +72,16 @@ namespace SkillboxCsharp10.Employees
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Создает нового клиента на основе базовой информации о нём.
+        /// </summary>
+        public Client CreateClient(ClientInfo clientInfo)
+        {
+            var client = new Client(clientInfo);
+            client.AddHistory("Создан", Title);
+            return client;
         }
     }
 }
